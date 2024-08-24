@@ -33,8 +33,7 @@ chrome.action.onClicked.addListener((tab) => {
                     thicknessInput.type = 'range';
                     thicknessInput.min = '1';
                     thicknessInput.max = '20';
-                    thicknessInput.value = '5';
-                    thicknessInput.classList.add('action-picker');
+                    thicknessInput.value = localStorage.getItem('currentThickness') || '5'; // Default kalınlık
 
                     const undoButton = document.createElement('button');
                     undoButton.innerText = 'Undo';
@@ -78,6 +77,7 @@ chrome.action.onClicked.addListener((tab) => {
                         dropdownMenu.style.display = isMenuVisible ? 'none' : 'flex';
                     });
 
+                    // Renk ve kalınlık ayarlarının senkronizasyonu
                     colorPicker.addEventListener('input', () => {
                         localStorage.setItem('currentColor', colorPicker.value);
                     });
@@ -85,6 +85,10 @@ chrome.action.onClicked.addListener((tab) => {
                     thicknessInput.addEventListener('input', () => {
                         localStorage.setItem('currentThickness', thicknessInput.value);
                     });
+
+                    // Sayfa ilk açıldığında kalem kalınlığını senkronize et
+                    localStorage.setItem('currentThickness', thicknessInput.value);
+                    localStorage.setItem('currentColor', colorPicker.value);
                 }
 
                 document.getElementById('control-panel').style.display = 'flex';
