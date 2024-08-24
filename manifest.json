@@ -20,7 +20,6 @@
         "icons/undo.png",
         "icons/redo.png",
         "icons/clear.png"
-
       ],
       "matches": ["<all_urls>"]
     }
