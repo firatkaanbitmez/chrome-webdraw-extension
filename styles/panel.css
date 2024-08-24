@@ -3,7 +3,7 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    background: #ffffff;
+    background: transparent;
     padding: 10px;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -19,7 +19,7 @@
 #control-panel button,
 #control-panel input[type="color"],
 #control-panel input[type="range"] {
-    background-color: transparent;
+    background-color: #ffffff;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -35,19 +35,13 @@
     cursor: pointer;
     transition: background-color 0.3s;
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
-    position: relative;
 }
 
-/* Dropdown Image'in Sabitlenmesi */
 #dropdown-button img {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 /* Açılır Menü Stili */
@@ -63,6 +57,10 @@
     padding: 15px;
     margin-top: 10px;
     width: 180px;
+    position: absolute;
+    top: 60px; /* Menü butonunun hemen altında yer alsın */
+    right: 0;
+    z-index: 9999;
 }
 
 /* Durdur, Temizle, Geri Al Düğmelerinin Stili */
