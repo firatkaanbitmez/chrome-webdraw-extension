@@ -1,0 +1,53 @@
+/* Kontrol Panelinin Genel Stili */
+#control-panel {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #ffffff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 10000;
+    display: flex;
+    gap: 10px;
+}
+
+/* Düğmelerin Stili */
+#control-panel button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* İkonun Stili */
+#control-panel img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+/* DropDown Menünün Stili */
+#dropdown-menu {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Durdur ve Temizle Düğmelerinin Stili */
+#control-panel .action-button {
+    background-color: #007BFF;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
