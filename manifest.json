@@ -8,7 +8,7 @@
     "48": "icons/draw-48.png",
     "128": "icons/draw-128.png"
   },
-  "permissions": ["activeTab", "scripting", "notifications"],
+  "permissions": ["activeTab", "scripting"],
   "background": {
     "service_worker": "background.js"
   },
@@ -22,12 +22,6 @@
         "icons/clear.png"
       ],
       "matches": ["<all_urls>"]
-    }
-  ],
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["draw.js"]
     }
   ]
 }
