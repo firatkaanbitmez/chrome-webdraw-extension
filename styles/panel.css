@@ -132,3 +132,9 @@
   transform: rotate(0deg);
   transition: transform 0.3s ease;
 }
+.action-button img,
+#dropdown-button img,
+#clear-button .clear-icon {
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
+  pointer-events: none; /* Tıklama ve seçme olaylarını devre dışı bırakır */
+}
