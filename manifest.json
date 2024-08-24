@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "WebDraw",
   "description": "Draw on any webpage.",
-  "version": "1.0",
+  "version": "1.0.0",
   "icons": {
     "16": "icons/draw-16.png",
     "48": "icons/draw-48.png",
@@ -12,7 +12,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "action": {},  
+  "action": {},
   "web_accessible_resources": [
     {
       "resources": ["icons/draw-128.png"],

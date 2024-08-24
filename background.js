@@ -14,11 +14,31 @@ chrome.action.onClicked.addListener((tab) => {
                 if (!document.getElementById('control-panel')) {
                     const panel = document.createElement('div');
                     panel.id = 'control-panel';
-                    
+
                     const dropdownButton = document.createElement('button');
+                    dropdownButton.id = 'dropdown-button';
                     const dropdownImage = document.createElement('img');
                     dropdownImage.src = chrome.runtime.getURL('icons/draw-128.png');
                     dropdownButton.appendChild(dropdownImage);
+
+                    const dropdownMenu = document.createElement('div');
+                    dropdownMenu.id = 'dropdown-menu';
+
+                    const colorPicker = document.createElement('input');
+                    colorPicker.type = 'color';
+                    colorPicker.classList.add('action-picker');
+                    colorPicker.value = '#FF0000'; // Default red color
+
+                    const thicknessInput = document.createElement('input');
+                    thicknessInput.type = 'range';
+                    thicknessInput.min = '1';
+                    thicknessInput.max = '20';
+                    thicknessInput.value = '5';
+                    thicknessInput.classList.add('action-picker');
+
+                    const undoButton = document.createElement('button');
+                    undoButton.innerText = 'Undo';
+                    undoButton.classList.add('action-button');
 
                     const stopButton = document.createElement('button');
                     stopButton.innerText = 'Stop Drawing';
@@ -27,6 +47,10 @@ chrome.action.onClicked.addListener((tab) => {
                     const clearButton = document.createElement('button');
                     clearButton.innerText = 'Clear Drawing';
                     clearButton.classList.add('action-button');
+
+                    undoButton.addEventListener('click', () => {
+                        window.dispatchEvent(new Event('undoDrawing'));
+                    });
 
                     stopButton.addEventListener('click', () => {
                         const canvas = document.querySelector('#webdraw-canvas');
@@ -37,14 +61,30 @@ chrome.action.onClicked.addListener((tab) => {
                     });
 
                     clearButton.addEventListener('click', () => {
-                        const canvas = document.querySelector('#webdraw-canvas');
-                        if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+                        window.dispatchEvent(new Event('clearCanvas'));
                     });
 
+                    dropdownMenu.appendChild(colorPicker);
+                    dropdownMenu.appendChild(thicknessInput);
+                    dropdownMenu.appendChild(undoButton);
+                    dropdownMenu.appendChild(clearButton);
+                    dropdownMenu.appendChild(stopButton);
                     panel.appendChild(dropdownButton);
-                    panel.appendChild(clearButton);
-                    panel.appendChild(stopButton);
+                    panel.appendChild(dropdownMenu);
                     document.body.appendChild(panel);
+
+                    dropdownButton.addEventListener('click', () => {
+                        const isMenuVisible = dropdownMenu.style.display === 'flex';
+                        dropdownMenu.style.display = isMenuVisible ? 'none' : 'flex';
+                    });
+
+                    colorPicker.addEventListener('input', () => {
+                        localStorage.setItem('currentColor', colorPicker.value);
+                    });
+
+                    thicknessInput.addEventListener('input', () => {
+                        localStorage.setItem('currentThickness', thicknessInput.value);
+                    });
                 }
 
                 document.getElementById('control-panel').style.display = 'flex';
