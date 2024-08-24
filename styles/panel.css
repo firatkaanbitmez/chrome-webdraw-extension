@@ -1,162 +1,120 @@
-:root {
-  --primary-color: #007BFF;
-  --background-color: #f4f4f4;
-  --button-color: #007BFF;
-  --button-hover-color: #007BFF;
-  --panel-padding: 1rem;
-  --border-radius: 12px;
-  --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  --transition-speed: 0.3s;
-}
-
-#webdraw-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 10000;
-  pointer-events: auto;
-  cursor: crosshair;
-}
-
+/* Genel Panel Tasarımı */
 #control-panel {
   position: fixed;
-  top: 20px;
+  bottom: 20px;
   right: 20px;
-  background: var(--background-color);
-  padding: var(--panel-padding);
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-  z-index: 10001;
+  background: rgba(30, 30, 30, 0.9);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  transition: transform var(--transition-speed), opacity var(--transition-speed), box-shadow var(--transition-speed);
+  gap: 10px;
+  z-index: 10001;
 }
 
-#control-panel:hover {
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-}
-
-#control-panel .action-button {
-  background-color: var(--button-color);
-  color: #ffffff;
+/* Butonlar */
+.action-button {
+  background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
   border: none;
-  padding: 0.5rem 1.5rem;
-  border-radius: 8px;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex; /* Flexbox kullanarak içeriği ortalar */
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.action-button img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+/* Butonlar Hover Efekti */
+.action-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+.action-button.small {
+  width: 40px;
+  height: 40px;
+}
+
+
+
+
+
+/* Dropdown Menu */
+#dropdown-button {
+  background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
 }
-
-#control-panel .action-button.small {
-  width: 40%;
-  padding: 0.25rem 0.75rem;
-}
-
-#control-panel .action-button:hover {
-  background-color: var(--button-hover-color);
-  transform: scale(1.1);
-}
-
-#control-panel .action-button img {
-  width: 16px;
-  height: 16px;
-}
-
-#undo-redo-container {
-  display: flex;
-  gap: 0.5rem;
-}
-#control-panel .action-button img {
-  width: 16px;
-  height: 16px;
-}
-
-#clear-button img.clear-icon {
-  width: 24px !important; /* Görselin genişliği 2x büyütüldü */
-  height: 24px !important; /* Görselin yüksekliği 2x büyütüldü */
-}
-
-
-
-#dropdown-button {
-  background-color: var(--primary-color);
-  color: #ffffff;
-  border-radius: 50%;
-  padding: 0.5rem;
-  cursor: pointer;
-  transition: background-color var(--transition-speed), transform var(--transition-speed);
-}
-
-#dropdown-button:hover {
-  background-color: #0056b3;
-  transform: rotate(360deg);
-}
-
-#dropdown-button.open {
-  transform: rotate(45deg);
-}
-
-#dropdown-button img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+#dropdown-button img{
+  width: 64px;
+  height: 64px;
 }
 
 #dropdown-menu {
   display: none;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.5rem;
-  background-color: var(--background-color);
-  border: 1px solid #ddd;
+  gap: 10px;
+  padding: 10px;
+  background: rgba(30, 30, 30, 0.95);
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
-  margin-top: 10px;
-  width: 220px;
   position: absolute;
-  top: 180px;
   right: 0;
-  z-index: 9999;
+  top: -80px;
+  z-index: 10001;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 
-#dropdown-menu input[type="color"],
-#dropdown-menu input[type="range"] {
-  width: 100%;
-  padding: 0.25rem;
-  margin-top: 0.5rem;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+/* Dropdown Menü Öğeleri */
+.action-picker {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #2d2d2d;
+  color: #fff;
   cursor: pointer;
 }
 
-#dropdown-menu input[type="range"] {
-  background-color: #ffffff;
+/* Clear Button için Özel Stil */
+#clear-button {
+  background: #ff4d4d;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-#dropdown-menu.active {
-  display: flex;
-  opacity: 1;
-  transform: translateY(0);
+#clear-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+  
 }
 
-@media (max-width: 600px) {
-  #control-panel {
-    top: 10px;
-    right: 10px;
-    padding: 0.75rem;
-  }
+#clear-button .clear-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+}
 
-  #dropdown-menu {
-    width: 180px;
-    padding: 0.75rem;
-  }
+/* Kanvas İmleci */
+#webdraw-canvas {
+  cursor: crosshair;
+}
+
+/* Geçişler ve Animasyonlar */
+.open {
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
 }
