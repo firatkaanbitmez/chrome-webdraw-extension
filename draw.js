@@ -18,15 +18,9 @@ if (typeof window.webDrawInitialized === 'undefined') {
     canvas.height = window.innerHeight;
 
     let drawing = false;
-    let currentPath = []; // Çizilen çizginin noktaları
+    let currentPath = []; // O an çizilen çizginin noktaları
     let drawHistory = JSON.parse(localStorage.getItem('drawHistory')) || [];
-
-    // Hata kontrolleri ekliyoruz
-    if (!Array.isArray(drawHistory)) {
-        console.error("drawHistory is not an array. Initializing as an empty array.");
-        drawHistory = [];
-        localStorage.setItem('drawHistory', JSON.stringify([]));
-    }
+    let redoHistory = []; // Redo için bir geçmiş ekliyoruz
 
     function draw(e) {
         if (!drawing) return;
@@ -36,7 +30,6 @@ if (typeof window.webDrawInitialized === 'undefined') {
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
 
-        // Noktaları kaydet
         currentPath.push({ x: e.clientX, y: e.clientY });
 
         ctx.beginPath();
@@ -70,7 +63,16 @@ if (typeof window.webDrawInitialized === 'undefined') {
 
     function undoLastDraw() {
         if (drawHistory.length === 0) return;
-        drawHistory.pop(); // Son çizgiyi kaldır
+        const lastDraw = drawHistory.pop(); // Son çizimi çıkar
+        redoHistory.push(lastDraw); // Redo için kaydet
+        localStorage.setItem('drawHistory', JSON.stringify(drawHistory)); // Güncel geçmişi kaydet
+        redraw();
+    }
+
+    function redoLastDraw() {
+        if (redoHistory.length === 0) return;
+        const lastRedo = redoHistory.pop(); // Redo çizimini geri al
+        drawHistory.push(lastRedo); // Çizim geçmişine ekle
         localStorage.setItem('drawHistory', JSON.stringify(drawHistory)); // Güncel geçmişi kaydet
         redraw();
     }
@@ -78,12 +80,14 @@ if (typeof window.webDrawInitialized === 'undefined') {
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawHistory = []; // Çizim geçmişini sıfırla
+        redoHistory = []; // Redo geçmişini sıfırla
         localStorage.setItem('drawHistory', JSON.stringify(drawHistory)); // Güncel geçmişi kaydet
     }
 
     canvas.addEventListener('mousedown', (e) => {
         drawing = true;
-        currentPath = [{ x: e.clientX, y: e.clientY }]; // Yeni çizgiyi başlat
+        currentPath = [{ x: e.clientX, y: e.clientY }];
+        redoHistory = []; // Yeni çizim başladığında redo geçmişini sıfırla
     });
 
     canvas.addEventListener('mousemove', (e) => {
@@ -94,13 +98,12 @@ if (typeof window.webDrawInitialized === 'undefined') {
         if (!drawing) return;
         drawing = false;
         if (currentPath.length > 0) {
-            // Çizilen çizgiyi geçmişe ekle
             drawHistory.push({
                 points: currentPath,
                 color: localStorage.getItem('currentColor') || '#FF0000',
                 width: localStorage.getItem('currentThickness') || 5
             });
-            localStorage.setItem('drawHistory', JSON.stringify(drawHistory)); // Güncel geçmişi kaydet
+            localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
         }
         currentPath = [];
     });
@@ -109,13 +112,12 @@ if (typeof window.webDrawInitialized === 'undefined') {
         if (drawing) {
             drawing = false;
             if (currentPath.length > 0) {
-                // Çizilen çizgiyi geçmişe ekle
                 drawHistory.push({
                     points: currentPath,
                     color: localStorage.getItem('currentColor') || '#FF0000',
                     width: localStorage.getItem('currentThickness') || 5
                 });
-                localStorage.setItem('drawHistory', JSON.stringify(drawHistory)); // Güncel geçmişi kaydet
+                localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
             }
             currentPath = [];
         }
@@ -124,15 +126,16 @@ if (typeof window.webDrawInitialized === 'undefined') {
     window.addEventListener('resize', () => {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        redraw(); // Yeniden çizim
+        redraw();
     });
 
     window.addEventListener('undoDrawing', undoLastDraw);
+    window.addEventListener('redoDrawing', redoLastDraw);
     window.addEventListener('clearCanvas', clearCanvas);
 
     window.webDrawInitialized = true;
     localStorage.setItem('isDrawingActive', 'true');
-    redraw(); // Önceki çizimleri yeniden yükle
+    redraw();
 } else {
     const canvas = document.getElementById('webdraw-canvas');
     if (canvas) canvas.style.display = 'block';

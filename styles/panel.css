@@ -3,30 +3,19 @@
     position: fixed;
     top: 20px;
     right: 20px;
-    background: transparent;
-    padding: 10px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     z-index: 10000;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
+    gap: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Düğmelerin ve Girişlerin Genel Stili */
-#control-panel button,
-#control-panel input[type="color"],
-#control-panel input[type="range"] {
-    background-color: #ffffff;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
-/* İkonun Stili */
+/* Açılır Menü Butonunun Stili */
 #dropdown-button {
     background-color: #007BFF;
     color: #ffffff;
@@ -34,7 +23,7 @@
     padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
-    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2);
 }
 
 #dropdown-button img {
@@ -49,34 +38,46 @@
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     background-color: #ffffff;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     padding: 15px;
     margin-top: 10px;
-    width: 180px;
+    width: 220px;
     position: absolute;
     top: 60px; /* Menü butonunun hemen altında yer alsın */
     right: 0;
     z-index: 9999;
 }
 
-/* Durdur, Temizle, Geri Al Düğmelerinin Stili */
+/* Undo, Redo, Clear Butonlarının Stili */
+#control-panel .action-buttons {
+    display: flex;
+    gap: 12px; /* Butonlar arasındaki boşluk */
+}
+
 #control-panel .action-button {
     background-color: #007BFF;
     color: #ffffff;
     border: none;
-    padding: 8px 10px;
-    border-radius: 6px;
+    padding: 10px 15px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 100%;
-    text-align: center;
-    font-size: 13px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
+#control-panel .action-button img {
+    width: 24px;
+    height: 24px;
+}
+
+/* Buton Hover Efekti */
 #control-panel .action-button:hover {
     background-color: #0056b3;
 }
@@ -90,34 +91,34 @@
 /* Renk Seçici Girişi Stili */
 #control-panel input[type="color"] {
     width: 100%;
-    height: 30px;
-    border-radius: 4px;
+    height: 35px;
+    border-radius: 8px;
     border: 1px solid #ccc;
-    padding: 4px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    padding: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     transition: box-shadow 0.3s ease;
 }
 
 #control-panel input[type="color"]:hover {
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
 }
 
 /* Kalınlık Ayarı (Range) Stili */
 #control-panel input[type="range"] {
     width: 100%;
-    margin: 5px 0;
+    margin: 10px 0;
     cursor: pointer;
     appearance: none;
     background: #007BFF;
-    height: 4px;
+    height: 5px;
     border-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 #control-panel input[type="range"]::-webkit-slider-thumb {
     appearance: none;
-    width: 14px;
-    height: 14px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
     background: #ffffff;
     border: 2px solid #007BFF;
@@ -138,7 +139,7 @@
     }
 
     #dropdown-menu {
-        width: 160px;
+        width: 180px;
         padding: 10px;
     }
 }
