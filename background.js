@@ -19,56 +19,26 @@ chrome.action.onClicked.addListener((tab) => {
                         const panel = document.createElement('div');
                         panel.id = 'control-panel';
 
-                        const dropdownButton = document.createElement('button');
-                        dropdownButton.id = 'dropdown-button';
-                        const dropdownImage = document.createElement('img');
-                        dropdownImage.src = chrome.runtime.getURL('icons/draw-128.png');
-                        dropdownButton.appendChild(dropdownImage);
-
-                        const dropdownMenu = document.createElement('div');
-                        dropdownMenu.id = 'dropdown-menu';
-
-                        const colorPicker = document.createElement('input');
-                        colorPicker.type = 'color';
-                        colorPicker.classList.add('action-picker');
-                        colorPicker.value = '#FF0000'; // Default red color
-
-                        const thicknessInput = document.createElement('input');
-                        thicknessInput.type = 'range';
-                        thicknessInput.min = '1';
-                        thicknessInput.max = '20';
-                        thicknessInput.value = localStorage.getItem('currentThickness') || '5'; // Default kalınlık
-
-                        // Undo, Redo ve Clear butonlarını içeren kapsayıcı
-                        const actionButtonsContainer = document.createElement('div');
-                        actionButtonsContainer.classList.add('action-buttons');
-
-                        // Undo düğmesi
+                        // Sabit Undo, Redo, Clear Butonları
                         const undoButton = document.createElement('button');
                         undoButton.classList.add('action-button');
                         const undoIcon = document.createElement('img');
                         undoIcon.src = chrome.runtime.getURL('icons/undo.png');
                         undoButton.appendChild(undoIcon);
 
-                        // Redo düğmesi
                         const redoButton = document.createElement('button');
                         redoButton.classList.add('action-button');
                         const redoIcon = document.createElement('img');
                         redoIcon.src = chrome.runtime.getURL('icons/redo.png');
                         redoButton.appendChild(redoIcon);
 
-                        // Clear düğmesi
                         const clearButton = document.createElement('button');
                         clearButton.classList.add('action-button');
                         const clearIcon = document.createElement('img');
-                        clearIcon.src = chrome.runtime.getURL('icons/clear.png'); // Clear için ikon
+                        clearIcon.src = chrome.runtime.getURL('icons/clear.png');
                         clearButton.appendChild(clearIcon);
 
-                        // Undo, Redo ve Clear butonlarını kapsayıcıya ekleme
-                        actionButtonsContainer.appendChild(undoButton);
-                        actionButtonsContainer.appendChild(redoButton);
-                        actionButtonsContainer.appendChild(clearButton);
-
+                        // Undo, Redo ve Clear butonlarının olay dinleyicileri
                         undoButton.addEventListener('click', () => {
                             window.dispatchEvent(new Event('undoDrawing'));
                         });
@@ -81,15 +51,39 @@ chrome.action.onClicked.addListener((tab) => {
                             window.dispatchEvent(new Event('clearCanvas'));
                         });
 
+                        // Dropdown menü butonu
+                        const dropdownButton = document.createElement('button');
+                        dropdownButton.id = 'dropdown-button';
+                        const dropdownImage = document.createElement('img');
+                        dropdownImage.src = chrome.runtime.getURL('icons/draw-128.png');
+                        dropdownButton.appendChild(dropdownImage);
+
+                        const dropdownMenu = document.createElement('div');
+                        dropdownMenu.id = 'dropdown-menu';
+
+                        const colorPicker = document.createElement('input');
+                        colorPicker.type = 'color';
+                        colorPicker.classList.add('action-picker');
+                        colorPicker.value = '#FF0000'; // Varsayılan kırmızı renk
+
+                        const thicknessInput = document.createElement('input');
+                        thicknessInput.type = 'range';
+                        thicknessInput.min = '1';
+                        thicknessInput.max = '20';
+                        thicknessInput.value = localStorage.getItem('currentThickness') || '5'; // Varsayılan kalınlık
+
                         dropdownMenu.appendChild(colorPicker);
                         dropdownMenu.appendChild(thicknessInput);
-                        dropdownMenu.appendChild(actionButtonsContainer); // Butonları menüye ekliyoruz
+
+                        panel.appendChild(undoButton);
+                        panel.appendChild(redoButton);
+                        panel.appendChild(clearButton);
                         panel.appendChild(dropdownButton);
                         panel.appendChild(dropdownMenu);
+
                         document.body.appendChild(panel);
 
                         dropdownButton.addEventListener('click', () => {
-                            const dropdownMenu = document.getElementById('dropdown-menu');
                             const isMenuVisible = dropdownMenu.style.display === 'flex';
                             dropdownMenu.style.display = isMenuVisible ? 'none' : 'flex';
                         });

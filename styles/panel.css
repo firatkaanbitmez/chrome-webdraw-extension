@@ -1,4 +1,3 @@
-/* Genel Panel Stili */
 #control-panel {
     position: fixed;
     top: 20px;
@@ -15,25 +14,24 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Açılır Menü Butonunun Stili */
-#dropdown-button {
+#control-panel .action-button {
     background-color: #007BFF;
     color: #ffffff;
-    border-radius: 50%;
+    border: none;
     padding: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#dropdown-button img {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+#control-panel .action-button img {
+    width: 24px;
+    height: 24px;
 }
 
-/* Açılır Menü Stili */
+/* Açılır Menü */
 #dropdown-menu {
     display: none;
     flex-direction: column;
@@ -47,87 +45,24 @@
     margin-top: 10px;
     width: 220px;
     position: absolute;
-    top: 60px; /* Menü butonunun hemen altında yer alsın */
+    top: 60px;
     right: 0;
     z-index: 9999;
 }
 
-/* Undo, Redo, Clear Butonlarının Stili */
-#control-panel .action-buttons {
-    display: flex;
-    gap: 12px; /* Butonlar arasındaki boşluk */
-}
-
-#control-panel .action-button {
+#dropdown-button {
     background-color: #007BFF;
     color: #ffffff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#control-panel .action-button img {
-    width: 24px;
-    height: 24px;
-}
-
-/* Buton Hover Efekti */
-#control-panel .action-button:hover {
-    background-color: #0056b3;
-}
-
-/* Renk ve Kalınlık Seçici Stili */
-#control-panel .action-picker {
-    width: 100%;
-    cursor: pointer;
-}
-
-/* Renk Seçici Girişi Stili */
-#control-panel input[type="color"] {
-    width: 100%;
-    height: 35px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    padding: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    transition: box-shadow 0.3s ease;
-}
-
-#control-panel input[type="color"]:hover {
-    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
-}
-
-/* Kalınlık Ayarı (Range) Stili */
-#control-panel input[type="range"] {
-    width: 100%;
-    margin: 10px 0;
-    cursor: pointer;
-    appearance: none;
-    background: #007BFF;
-    height: 5px;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-#control-panel input[type="range"]::-webkit-slider-thumb {
-    appearance: none;
-    width: 18px;
-    height: 18px;
     border-radius: 50%;
-    background: #ffffff;
-    border: 2px solid #007BFF;
+    padding: 10px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-#control-panel input[type="range"]::-webkit-slider-thumb:hover {
-    background-color: #0056b3;
+#dropdown-button img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
 }
 
 /* Mobil ve Küçük Ekranlarda Düzenleme */
