@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "WebDraw Extension",
+  "name": "WebDraw",
   "description": "Draw on any webpage.",
   "version": "1.0",
   "icons": {
