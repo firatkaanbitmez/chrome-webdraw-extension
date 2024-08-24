@@ -80,6 +80,31 @@ if (!window.webDrawInitialized) {
       }
     });
   }
+  function createFavoriteColorButtons() {
+    chrome.storage.sync.get('favColors', ({ favColors }) => {
+      const colors = favColors || ['#FF0000', '#00FF00', '#0000FF'];
+      const colorContainer = document.createElement('div');
+      colorContainer.id = 'color-container';
+      colorContainer.style.display = 'flex';
+      colorContainer.style.gap = '5px';
+
+      colors.forEach(color => {
+        const colorButton = document.createElement('button');
+        colorButton.style.background = color;
+        colorButton.style.width = '30px';
+        colorButton.style.height = '30px';
+        colorButton.style.border = '2px solid #fff';
+        colorButton.style.borderRadius = '50%';
+        colorButton.style.cursor = 'pointer';
+        colorButton.addEventListener('click', () => {
+          localStorage.setItem('currentColor', color);
+        });
+        colorContainer.appendChild(colorButton);
+      });
+
+      document.getElementById('control-panel').appendChild(colorContainer);
+    });
+  }
 
   function undoLastDraw() {
     if (drawHistory.length === 0) return;
@@ -124,6 +149,7 @@ if (!window.webDrawInitialized) {
   if (!document.getElementById('control-panel')) {
     const panel = document.createElement('div');
     panel.id = 'control-panel';
+    createFavoriteColorButtons();
 
     const undoRedoContainer = document.createElement('div');
     undoRedoContainer.id = 'undo-redo-container';

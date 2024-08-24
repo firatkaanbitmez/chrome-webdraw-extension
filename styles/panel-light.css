@@ -13,7 +13,23 @@
     z-index: 10001;
     user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
   }
+  #color-container {
+    display: flex;
+    flex-direction: column; /* Yukarıdan aşağıya doğru sıralama sağlar */
+    gap: 5px;
+  }
   
+  #color-container button {
+    border: 2px solid #fff;
+    border-radius: 0% !important;
+    cursor: pointer;
+    width: 20px !important;
+    height: 20px !important;
+  }
+  
+  #color-container button:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
   /* Butonlar */
   .action-button {
     background: linear-gradient(135deg, #e0e0e0, #ffffff);

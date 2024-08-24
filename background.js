@@ -65,17 +65,14 @@ function stopDrawingMode() {
 }
 
 function triggerNotification(message) {
-  // Eğer cooldown aktifse, bildirim gösterme
   if (notificationCooldown) return;
 
-  // Bildirim göster ve cooldown başlat
   showErrorNotification(message);
   notificationCooldown = true;
 
-  // Cooldown süresi bittikten sonra tekrar bildirimlere izin ver
   setTimeout(() => {
     notificationCooldown = false;
-  }, 5000); // 5 saniyelik cooldown süresi
+  }, 5000);
 }
 
 function showErrorNotification(message) {
