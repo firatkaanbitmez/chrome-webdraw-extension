@@ -1,4 +1,3 @@
-// Canvas ve context'in daha önce tanımlanıp tanımlanmadığını kontrol ediyoruz.
 if (typeof window.webDrawInitialized === 'undefined') {
     var canvas = document.getElementById('webdraw-canvas');
     if (!canvas) {
@@ -57,10 +56,27 @@ if (typeof window.webDrawInitialized === 'undefined') {
 
     // Artık canvas ve gerekli ayarların tanımlandığını işaretliyoruz.
     window.webDrawInitialized = true;
+
+    // Çizim durumu başladığında durumu localStorage'a kaydediyoruz.
+    localStorage.setItem('isDrawingActive', 'true');
 } else {
     // Eğer canvas zaten tanımlandıysa, sadece görünür hale getiriyoruz.
     const canvas = document.getElementById('webdraw-canvas');
     if (canvas) {
         canvas.style.display = 'block';
+    }
+}
+
+// Eğer sayfa yenilendiğinde çizim devam ediyorsa, durdurulması için kontrol sağlıyoruz.
+if (localStorage.getItem('isDrawingActive') === 'true') {
+    const canvas = document.getElementById('webdraw-canvas');
+    if (canvas) {
+        canvas.style.display = 'block';
+    }
+} else {
+    // Eğer çizim durdurulmuşsa, canvas gizlenir.
+    const canvas = document.getElementById('webdraw-canvas');
+    if (canvas) {
+        canvas.style.display = 'none';
     }
 }

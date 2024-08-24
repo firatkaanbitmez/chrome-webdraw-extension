@@ -15,7 +15,7 @@
   "action": {},  
   "web_accessible_resources": [
     {
-      "resources": ["draw.js"],
+      "resources": ["icons/draw-128.png"],
       "matches": ["<all_urls>"]
     }
   ]
