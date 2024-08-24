@@ -32,7 +32,7 @@ if (!window.webDrawInitialized) {
     if (!drawing) return;
 
     ctx.strokeStyle = localStorage.getItem('currentColor') || '#FF0000';
-    ctx.lineWidth = localStorage.getItem('currentThickness') || 5;
+    ctx.lineWidth = localStorage.getItem('currentThickness') || 3;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
 
@@ -56,7 +56,7 @@ if (!window.webDrawInitialized) {
       drawHistory.push({
         points: currentPath,
         color: localStorage.getItem('currentColor') || '#FF0000',
-        width: localStorage.getItem('currentThickness') || 5
+        width: localStorage.getItem('currentThickness') || 3
       });
       localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
     }
@@ -177,7 +177,7 @@ if (!window.webDrawInitialized) {
     thicknessInput.type = 'range';
     thicknessInput.min = '1';
     thicknessInput.max = '20';
-    thicknessInput.value = localStorage.getItem('currentThickness') || '5';
+    thicknessInput.value = localStorage.getItem('currentThickness') || '3';
 
     dropdownMenu.appendChild(colorPicker);
     dropdownMenu.appendChild(thicknessInput);

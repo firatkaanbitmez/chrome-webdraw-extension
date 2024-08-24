@@ -18,21 +18,25 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 function activateDrawingMode(tabId) {
-  chrome.scripting.executeScript({
-    target: { tabId: tabId },
-    files: ["draw.js"]
-  })
-  .then(() => {
-    return chrome.scripting.insertCSS({
+  chrome.storage.sync.get('theme', ({ theme }) => {
+    const cssFile = theme === 'light' ? 'styles/panel-light.css' : 'styles/panel.css';
+    chrome.scripting.executeScript({
       target: { tabId: tabId },
-      files: ["styles/panel.css"]
+      files: ["draw.js"]
+    })
+    .then(() => {
+      return chrome.scripting.insertCSS({
+        target: { tabId: tabId },
+        files: [cssFile]
+      });
+    })
+    .catch(error => {
+      console.error(error);
+      triggerNotification('Failed to activate drawing mode.');
     });
-  })
-  .catch(error => {
-    console.error(error);
-    triggerNotification('Failed to activate drawing mode.');
   });
 }
+
 
 function deactivateDrawingMode(tabId) {
   chrome.scripting.executeScript({

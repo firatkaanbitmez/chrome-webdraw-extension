@@ -8,11 +8,12 @@
     "48": "icons/draw-48.png",
     "128": "icons/draw-128.png"
   },
-  "permissions": ["activeTab", "scripting", "notifications"],
+  "permissions": ["activeTab", "scripting", "notifications", "storage"],
   "background": {
     "service_worker": "background.js"
   },
   "action": {},
+  "options_page": "options.html",
   "web_accessible_resources": [
     {
       "resources": [
