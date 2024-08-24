@@ -1,46 +1,85 @@
 let isDrawingActive = false;
+let notificationCooldown = false; // Bildirim cooldown durumu
 
 chrome.action.onClicked.addListener((tab) => {
+  // chrome:// URL'leri kontrol ederek bu tür sayfalarda kod çalıştırmayı engelle
+  if (tab.url.startsWith('chrome://')) {
+    triggerNotification('This extension cannot run on chrome:// URLs.');
+    return;
+  }
+
   isDrawingActive = !isDrawingActive;
 
   if (isDrawingActive) {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      files: ["draw.js"]
-    }, () => {
-      chrome.scripting.insertCSS({
-        target: { tabId: tab.id },
-        files: ["styles/panel.css"]
-      });
-    });
+    activateDrawingMode(tab.id);
   } else {
-    chrome.scripting.executeScript({
-      target: { tabId: tab.id },
-      func: stopDrawingMode
-    });
+    deactivateDrawingMode(tab.id);
   }
 });
+
+function activateDrawingMode(tabId) {
+  chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    files: ["draw.js"]
+  })
+  .then(() => {
+    return chrome.scripting.insertCSS({
+      target: { tabId: tabId },
+      files: ["styles/panel.css"]
+    });
+  })
+  .catch(error => {
+    console.error(error);
+    triggerNotification('Failed to activate drawing mode.');
+  });
+}
+
+function deactivateDrawingMode(tabId) {
+  chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    func: stopDrawingMode
+  }).catch(error => {
+    console.error(error);
+    triggerNotification('Failed to deactivate drawing mode.');
+  });
+}
 
 function stopDrawingMode() {
   const canvas = document.getElementById('webdraw-canvas');
   const panel = document.getElementById('control-panel');
 
   if (canvas) {
-    canvas.removeEventListener('mousedown', startDrawing);
-    canvas.removeEventListener('mousemove', draw);
-    canvas.removeEventListener('mouseup', stopDrawing);
-    canvas.removeEventListener('mouseout', stopDrawing);
-    window.removeEventListener('resize', handleResize);
-    window.removeEventListener('undoDrawing', undoLastDraw);
-    window.removeEventListener('redoDrawing', redoLastDraw);
-    window.removeEventListener('clearCanvas', clearCanvas);
-    document.body.removeChild(canvas);
+    canvas.remove();
   }
 
   if (panel) {
-    document.body.removeChild(panel);
+    panel.remove();
   }
 
   localStorage.setItem('isDrawingActive', 'false');
-  window.webDrawInitialized = false; // Çizim modunun sıfırlandığından emin olun
+  window.webDrawInitialized = false;
+}
+
+function triggerNotification(message) {
+  // Eğer cooldown aktifse, bildirim gösterme
+  if (notificationCooldown) return;
+
+  // Bildirim göster ve cooldown başlat
+  showErrorNotification(message);
+  notificationCooldown = true;
+
+  // Cooldown süresi bittikten sonra tekrar bildirimlere izin ver
+  setTimeout(() => {
+    notificationCooldown = false;
+  }, 5000); // 5 saniyelik cooldown süresi
+}
+
+function showErrorNotification(message) {
+  chrome.notifications.create({
+    type: 'basic',
+    iconUrl: chrome.runtime.getURL('icons/draw-128.png'),
+    title: 'WebDraw Error',
+    message: message,
+    priority: 2
+  });
 }
