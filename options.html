@@ -5,46 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WebDraw Options</title>
   <style>
+    /* Genel Ayarlar */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
       padding: 20px;
-    }
-    .theme-toggle, .fav-colors {
+      color: #333;
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 10px;
+      height: 100vh;
+    }
+
+    .settings-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 24px;
+      color: #444;
+      text-align: center;
+    }
+
+    .theme-toggle,
+    .fav-colors {
       margin-bottom: 20px;
     }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: all 0.3s ease;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+    }
+
     .color-picker {
       display: flex;
       gap: 10px;
+      justify-content: space-between;
     }
+
     input[type="color"] {
-      width: 40px;
-      height: 40px;
-      border: none;
-      padding: 0;
+      width: 50px;
+      height: 50px;
+      border: 2px solid #ccc;
+      border-radius: 4px;
       cursor: pointer;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    input[type="color"]:hover {
+      transform: scale(1.1);
+      border-color: #007BFF;
+    }
+
+    @media (max-width: 500px) {
+      .settings-container {
+        padding: 20px;
+      }
+
+      input[type="color"] {
+        width: 40px;
+        height: 40px;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>WebDraw Settings</h1>
-  
-  <div class="theme-toggle">
-    <label for="theme-select">Select Theme:</label>
-    <select id="theme-select">
-      <option value="dark">Dark</option>
-      <option value="light">Light</option>
-    </select>
-  </div>
+  <div class="settings-container">
+    <h1>WebDraw Settings</h1>
+    
+    <div class="theme-toggle">
+      <label for="theme-select">Select Theme:</label>
+      <select id="theme-select">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+      </select>
+    </div>
 
-  <div class="fav-colors">
-    <label for="fav-colors">Favorite Colors:</label>
-    <div id="fav-colors" class="color-picker">
-      <input type="color" value="#FF0000">
-      <input type="color" value="#00FF00">
-      <input type="color" value="#0000FF">
+    <div class="fav-colors">
+      <label for="fav-colors">Favorite Colors:</label>
+      <div id="fav-colors" class="color-picker">
+        <input type="color" value="#FF0000">
+        <input type="color" value="#00FF00">
+        <input type="color" value="#0000FF">
+      </div>
     </div>
   </div>
 
