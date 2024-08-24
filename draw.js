@@ -183,9 +183,17 @@ if (!window.webDrawInitialized) {
     dropdownMenu.appendChild(thicknessInput);
 
     dropdownButton.addEventListener('click', () => {
-      dropdownMenu.style.display = dropdownMenu.style.display === 'flex' ? 'none' : 'flex';
-      dropdownButton.classList.toggle('open');
+      if (dropdownMenu.style.display === 'flex') {
+        dropdownMenu.style.display = 'none';
+        dropdownButton.classList.remove('open');
+        dropdownButton.classList.add('close');
+      } else {
+        dropdownMenu.style.display = 'flex';
+        dropdownButton.classList.remove('close');
+        dropdownButton.classList.add('open');
+      }
     });
+    
 
     colorPicker.addEventListener('input', () => {
       localStorage.setItem('currentColor', colorPicker.value);

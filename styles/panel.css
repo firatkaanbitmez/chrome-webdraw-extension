@@ -11,6 +11,7 @@
   align-items: center;
   gap: 10px;
   z-index: 10001;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 /* Butonlar */
@@ -26,26 +27,27 @@
   justify-content: center;
   width: 40px;
   height: 40px;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 .action-button img {
   width: 16px;
   height: 16px;
   filter: brightness(0) invert(1);
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
+
 /* Butonlar Hover Efekti */
 .action-button:hover {
   transform: scale(1.1);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
+
 .action-button.small {
   width: 40px;
   height: 40px;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
-
-
-
-
 
 /* Dropdown Menu */
 #dropdown-button {
@@ -57,10 +59,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
-#dropdown-button img{
+
+#dropdown-button img {
   width: 64px;
   height: 64px;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 #dropdown-menu {
@@ -75,6 +80,7 @@
   top: -80px;
   z-index: 10001;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 /* Dropdown Menü Öğeleri */
@@ -85,6 +91,7 @@
   background-color: #2d2d2d;
   color: #fff;
   cursor: pointer;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 /* Clear Button için Özel Stil */
@@ -94,27 +101,34 @@
   border-radius: 50%;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 #clear-button:hover {
   transform: scale(1.1);
   box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
-  
 }
 
 #clear-button .clear-icon {
   width: 20px;
   height: 20px;
   filter: brightness(0) invert(1);
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 /* Kanvas İmleci */
 #webdraw-canvas {
   cursor: crosshair;
+  user-select: none; /* Kullanıcı seçimini devre dışı bırakır */
 }
 
 /* Geçişler ve Animasyonlar */
 .open {
-  transform: rotate(45deg);
+  transform: rotate(135deg);
+  transition: transform 0.3s ease;
+}
+
+.close {
+  transform: rotate(0deg);
   transition: transform 0.3s ease;
 }
