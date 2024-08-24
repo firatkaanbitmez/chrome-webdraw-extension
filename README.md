@@ -2,7 +2,7 @@
 
 # WebDraw
 
-![WebDraw Icon](./icons/draw-128.png)
+![WebDraw Icon](./src/icons/draw-128.png)
 
 **WebDraw** is a versatile Chrome extension that lets you draw directly on any webpage. Whether for annotations, sketches, or highlighting key elements, WebDraw provides a smooth and user-friendly drawing experience right within your browser.
 
@@ -47,11 +47,11 @@ You can easily install the extension directly from the [Chrome Web Store](https:
 
 ## Screenshots
 
-![Screenshot 1](./screenshot/s1.png)
-![Screenshot 2](./screenshot/s2.png)
-![Screenshot 3](./screenshot/s3.png)
-![Screenshot 4](./screenshot/s4.png)
-![Screenshot 5](./screenshot/s5.png)
+![Screenshot 1](./src/screenshot/s1.png)
+![Screenshot 2](./src/screenshot/s2.png)
+![Screenshot 3](./src/screenshot/s3.png)
+![Screenshot 4](./src/screenshot/s4.png)
+![Screenshot 5](./src/screenshot/s5.png)
 
 
 
