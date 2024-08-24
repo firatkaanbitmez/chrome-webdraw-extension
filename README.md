@@ -51,6 +51,8 @@ You can easily install the extension directly from the [Chrome Web Store](https:
 ![Screenshot 2](./screenshot/s2.png)
 ![Screenshot 3](./screenshot/s3.png)
 ![Screenshot 4](./screenshot/s4.png)
+![Screenshot 5](./screenshot/s5.png)
+
 
 
 ## Error Solutions for Chrome and Edge
