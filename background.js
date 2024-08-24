@@ -29,9 +29,9 @@ chrome.action.onClicked.addListener((tab) => {
                 
                     const dropdownImage = document.createElement('img');
                     dropdownImage.src = chrome.runtime.getURL('icons/draw-128.png');
-                    dropdownImage.style.width = '40px'; // İstediğiniz boyutu buradan ayarlayabilirsiniz
+                    dropdownImage.style.width = '40px';
                     dropdownImage.style.height = '40px';
-                    dropdownImage.style.borderRadius = '50%'; // İsteğe bağlı olarak köşeleri yuvarlayabilirsiniz
+                    dropdownImage.style.borderRadius = '50%';
                 
                     dropdownButton.appendChild(dropdownImage);
                 
@@ -77,8 +77,6 @@ chrome.action.onClicked.addListener((tab) => {
                         }
                         document.body.style.cursor = 'default';
                         panel.style.display = 'none';
-                
-                        // Çizim durumu durdurulduğunda localStorage güncellenir.
                         localStorage.setItem('isDrawingActive', 'false');
                     });
                 
@@ -97,9 +95,14 @@ chrome.action.onClicked.addListener((tab) => {
                     document.body.appendChild(panel);
                 }
                 
-                // Paneli görünür hale getir
                 document.getElementById('control-panel').style.display = 'flex';
-                
+
+                // Ensure that drawing is active when starting again
+                const canvas = document.getElementById('webdraw-canvas');
+                if (canvas) {
+                    canvas.style.display = 'block';
+                }
+                localStorage.setItem('isDrawingActive', 'true');
             }
         });
     });
