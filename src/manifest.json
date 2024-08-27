@@ -20,9 +20,14 @@
         "icons/draw-128.png",
         "icons/undo.png",
         "icons/redo.png",
-        "icons/clear.png"
+        "icons/clear.png",
+        "icons/circle.png",
+        "icons/square.png",
+        "icons/triangle.png",
+        "icons/arrow.png"
       ],
       "matches": ["<all_urls>"]
+      
     }
   ]
 }
