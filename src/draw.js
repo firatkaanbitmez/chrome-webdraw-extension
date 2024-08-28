@@ -21,7 +21,7 @@ if (!window.webDrawInitialized) {
   let currentPath = [];
   let drawHistory = JSON.parse(localStorage.getItem('drawHistory')) || [];
   let redoHistory = [];
-  let currentShape = 'freeform'; // Şekil türü: 'freeform', 'circle', 'square', 'triangle', 'arrow'
+  let currentShape = 'freeform'; // Şekil türü: 'freeform', 'circle', 'square', 'triangle', 'arrow', 'line'
   let startX, startY;
 
   // Çizime başlama fonksiyonu
@@ -67,12 +67,17 @@ if (!window.webDrawInitialized) {
       ctx.stroke();
     } else if (currentShape === 'arrow') {
       drawArrow(ctx, startX, startY, e.clientX, e.clientY, ctx.lineWidth);
+    } else if (currentShape === 'line') {
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(e.clientX, e.clientY);
+      ctx.stroke();
     }
   }
 
   // Ok çizim fonksiyonu
   function drawArrow(context, fromx, fromy, tox, toy, thickness) {
-    const headlen = Math.max(20, thickness *4); // Ok başının uzunluğunu kalınlığa göre ayarla
+    const headlen = Math.max(20, thickness * 4); // Ok başının uzunluğunu kalınlığa göre ayarla
     const angle = Math.atan2(toy - fromy, tox - fromx);
 
     context.beginPath();
@@ -96,36 +101,33 @@ if (!window.webDrawInitialized) {
   }
 
   // Çizimi bitirme fonksiyonu
-// Çizimi bitirme fonksiyonu
-function stopDrawing(e) {
-  if (!drawing) return;
-  drawing = false;
-  
-  if (currentShape !== 'freeform') {
+  function stopDrawing(e) {
+    if (!drawing) return;
+    drawing = false;
+
+    if (currentShape !== 'freeform') {
       drawHistory.push({
-          shape: currentShape,
-          points: [{ x: startX, y: startY }, { x: e.clientX, y: e.clientY }],
-          color: localStorage.getItem('currentColor') || '#FF0000',
-          width: localStorage.getItem('currentThickness') || 3,
-          startX,
-          startY,
+        shape: currentShape,
+        points: [{ x: startX, y: startY }, { x: e.clientX, y: e.clientY }],
+        color: localStorage.getItem('currentColor') || '#FF0000',
+        width: localStorage.getItem('currentThickness') || 3,
+        startX,
+        startY,
       });
       localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
-      // currentShape = 'freeform'; // Bu satırı kaldırıyoruz, böylece kullanıcı şekil değiştirmedikçe seçili şekil aynı kalır.
-  } else {
+    } else {
       if (currentPath.length > 0) {
-          drawHistory.push({
-              shape: currentShape,
-              points: currentPath,
-              color: localStorage.getItem('currentColor') || '#FF0000',
-              width: localStorage.getItem('currentThickness') || 3,
-          });
-          localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+        drawHistory.push({
+          shape: currentShape,
+          points: currentPath,
+          color: localStorage.getItem('currentColor') || '#FF0000',
+          width: localStorage.getItem('currentThickness') || 3,
+        });
+        localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
       }
+    }
+    currentPath = [];
   }
-  currentPath = [];
-}
-
 
   // Çizimleri yeniden çizme fonksiyonu
   function redraw() {
@@ -157,27 +159,32 @@ function stopDrawing(e) {
         ctx.stroke();
       } else if (path.shape === 'arrow' && path.points && path.points.length > 1) {
         drawArrow(ctx, path.startX, path.startY, path.points[1].x, path.points[1].y, path.width);
+      } else if (path.shape === 'line' && path.points && path.points.length > 1) {
+        ctx.beginPath();
+        ctx.moveTo(path.startX, path.startY);
+        ctx.lineTo(path.points[1].x, path.points[1].y);
+        ctx.stroke();
       }
     });
   }
 
   // Şekil seçme butonları oluşturma
-// Şekil seçme butonları oluşturma
-function createShapeButtons() {
-  const shapes = [
+  function createShapeButtons() {
+    const shapes = [
       { name: 'Freeform', value: 'freeform', icon: 'icons/pencil.png' }, // Kalem ikonu
       { name: 'Circle', value: 'circle', icon: 'icons/circle.png' },
       { name: 'Square', value: 'square', icon: 'icons/square.png' },
       { name: 'Triangle', value: 'triangle', icon: 'icons/triangle.png' },
-      { name: 'Arrow', value: 'arrow', icon: 'icons/arrow.png' }
-  ];
+      { name: 'Arrow', value: 'arrow', icon: 'icons/arrow.png' },
+      { name: 'Line', value: 'line', icon: 'icons/line.png' } // Çizgi ikonu
+    ];
 
-  const shapeContainer = document.createElement('div');
-  shapeContainer.id = 'shape-container';
-  shapeContainer.style.display = 'flex';
-  shapeContainer.style.gap = '5px';
+    const shapeContainer = document.createElement('div');
+    shapeContainer.id = 'shape-container';
+    shapeContainer.style.display = 'flex';
+    shapeContainer.style.gap = '5px';
 
-  shapes.forEach(shape => {
+    shapes.forEach(shape => {
       const shapeButton = document.createElement('button');
       shapeButton.style.background = `url(${chrome.runtime.getURL(shape.icon)}) no-repeat center`;
       shapeButton.style.backgroundSize = 'contain';
@@ -188,44 +195,49 @@ function createShapeButtons() {
       shapeButton.title = shape.name;
       shapeButton.dataset.shape = shape.value; // Her buton için veri attribute ekle
       shapeButton.addEventListener('click', () => {
-          currentShape = shape.value;
-          updateActiveShape(shapeButton);
+        currentShape = shape.value;
+        updateActiveShape(shapeButton);
       });
       shapeContainer.appendChild(shapeButton);
-  });
+    });
 
-  document.getElementById('control-panel').appendChild(shapeContainer);
-}
+    document.getElementById('control-panel').appendChild(shapeContainer);
 
-// Aktif şekli güncelleyen fonksiyon
-function updateActiveShape(activeButton) {
-  // Tüm butonların aktif sınıfını kaldır
-  document.querySelectorAll('#shape-container button').forEach(button => {
+    // Varsayılan olarak Freeform'un seçili olmasını sağla
+    const defaultButton = shapeContainer.querySelector('button[data-shape="freeform"]');
+    if (defaultButton) {
+      updateActiveShape(defaultButton);
+    }
+  }
+
+  // Aktif şekli güncelleyen fonksiyon
+  function updateActiveShape(activeButton) {
+    // Tüm butonların aktif sınıfını kaldır
+    document.querySelectorAll('#shape-container button').forEach(button => {
       button.classList.remove('active-shape');
-  });
+    });
 
-  // Seçili butona aktif sınıfını ekle
-  activeButton.classList.add('active-shape');
-}
+    // Seçili butona aktif sınıfını ekle
+    activeButton.classList.add('active-shape');
+  }
 
-// Şekil butonlarının stilini güncelleme
-const style = document.createElement('style');
-style.innerHTML = `
-  .active-shape {
+  // Şekil butonlarının stilini güncelleme
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .active-shape {
       border: 2px solid #fff; /* Seçili butonun etrafında beyaz bir sınır */
       background-color: rgba(255, 255, 255, 0.2); /* Hafif bir arka plan rengi */
-  }
-`;
-document.head.appendChild(style);
+    }
+  `;
+  document.head.appendChild(style);
 
-// Varsayılan olarak Freeform'un seçili olmasını sağla
-document.addEventListener('DOMContentLoaded', () => {
-  const defaultButton = document.querySelector('button[data-shape="freeform"]');
-  if (defaultButton) {
+  // Varsayılan olarak Freeform'un seçili olmasını sağla
+  document.addEventListener('DOMContentLoaded', () => {
+    const defaultButton = document.querySelector('button[data-shape="freeform"]');
+    if (defaultButton) {
       updateActiveShape(defaultButton);
-  }
-});
-
+    }
+  });
 
   // Favori renk butonlarını oluşturma
   function createFavoriteColorButtons() {
