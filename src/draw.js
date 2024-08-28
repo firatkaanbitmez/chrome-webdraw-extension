@@ -165,7 +165,7 @@ function stopDrawing(e) {
 // Şekil seçme butonları oluşturma
 function createShapeButtons() {
   const shapes = [
-      { name: 'Freeform', value: 'freeform', icon: 'icons/draw-16.png' }, // Kalem ikonu
+      { name: 'Freeform', value: 'freeform', icon: 'icons/pencil.png' }, // Kalem ikonu
       { name: 'Circle', value: 'circle', icon: 'icons/circle.png' },
       { name: 'Square', value: 'square', icon: 'icons/square.png' },
       { name: 'Triangle', value: 'triangle', icon: 'icons/triangle.png' },

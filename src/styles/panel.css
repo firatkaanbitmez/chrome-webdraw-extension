@@ -13,6 +13,23 @@
   z-index: 10001;
   user-select: none;
 }
+/* Şekil Butonlarının Genel Stili */
+#shape-container button {
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  border-radius: 10px;
+}
+
+/* Aktif Şekil Butonunun Stili */
+.active-shape {
+  background-color: rgba(255, 255, 255, 0.2); /* Hafif bir arka plan rengi */
+  transform: scale(1.2); /* Biraz büyütme efekti */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Hafif beyaz bir parlama */
+}
 #color-container {
   display: flex;
   flex-direction: column; /* Yukarıdan aşağıya doğru sıralama sağlar */
