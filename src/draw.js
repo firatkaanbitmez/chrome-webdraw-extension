@@ -96,33 +96,36 @@ if (!window.webDrawInitialized) {
   }
 
   // Çizimi bitirme fonksiyonu
-  function stopDrawing(e) {
-    if (!drawing) return;
-    drawing = false;
-    if (currentShape !== 'freeform') {
+// Çizimi bitirme fonksiyonu
+function stopDrawing(e) {
+  if (!drawing) return;
+  drawing = false;
+  
+  if (currentShape !== 'freeform') {
       drawHistory.push({
-        shape: currentShape,
-        points: [{ x: startX, y: startY }, { x: e.clientX, y: e.clientY }],
-        color: localStorage.getItem('currentColor') || '#FF0000',
-        width: localStorage.getItem('currentThickness') || 3,
-        startX,
-        startY,
-      });
-      localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
-      currentShape = 'freeform'; // Şekil çizimi tamamlandıktan sonra kalem moduna dön
-    } else {
-      if (currentPath.length > 0) {
-        drawHistory.push({
           shape: currentShape,
-          points: currentPath,
+          points: [{ x: startX, y: startY }, { x: e.clientX, y: e.clientY }],
           color: localStorage.getItem('currentColor') || '#FF0000',
           width: localStorage.getItem('currentThickness') || 3,
-        });
-        localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+          startX,
+          startY,
+      });
+      localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+      // currentShape = 'freeform'; // Bu satırı kaldırıyoruz, böylece kullanıcı şekil değiştirmedikçe seçili şekil aynı kalır.
+  } else {
+      if (currentPath.length > 0) {
+          drawHistory.push({
+              shape: currentShape,
+              points: currentPath,
+              color: localStorage.getItem('currentColor') || '#FF0000',
+              width: localStorage.getItem('currentThickness') || 3,
+          });
+          localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
       }
-    }
-    currentPath = [];
   }
+  currentPath = [];
+}
+
 
   // Çizimleri yeniden çizme fonksiyonu
   function redraw() {
@@ -159,20 +162,22 @@ if (!window.webDrawInitialized) {
   }
 
   // Şekil seçme butonları oluşturma
-  function createShapeButtons() {
-    const shapes = [
+// Şekil seçme butonları oluşturma
+function createShapeButtons() {
+  const shapes = [
+      { name: 'Freeform', value: 'freeform', icon: 'icons/draw-16.png' }, // Kalem ikonu
       { name: 'Circle', value: 'circle', icon: 'icons/circle.png' },
       { name: 'Square', value: 'square', icon: 'icons/square.png' },
       { name: 'Triangle', value: 'triangle', icon: 'icons/triangle.png' },
       { name: 'Arrow', value: 'arrow', icon: 'icons/arrow.png' }
-    ];
+  ];
 
-    const shapeContainer = document.createElement('div');
-    shapeContainer.id = 'shape-container';
-    shapeContainer.style.display = 'flex';
-    shapeContainer.style.gap = '5px';
+  const shapeContainer = document.createElement('div');
+  shapeContainer.id = 'shape-container';
+  shapeContainer.style.display = 'flex';
+  shapeContainer.style.gap = '5px';
 
-    shapes.forEach(shape => {
+  shapes.forEach(shape => {
       const shapeButton = document.createElement('button');
       shapeButton.style.background = `url(${chrome.runtime.getURL(shape.icon)}) no-repeat center`;
       shapeButton.style.backgroundSize = 'contain';
@@ -181,14 +186,46 @@ if (!window.webDrawInitialized) {
       shapeButton.style.border = 'none';
       shapeButton.style.cursor = 'pointer';
       shapeButton.title = shape.name;
+      shapeButton.dataset.shape = shape.value; // Her buton için veri attribute ekle
       shapeButton.addEventListener('click', () => {
-        currentShape = shape.value;
+          currentShape = shape.value;
+          updateActiveShape(shapeButton);
       });
       shapeContainer.appendChild(shapeButton);
-    });
+  });
 
-    document.getElementById('control-panel').appendChild(shapeContainer);
+  document.getElementById('control-panel').appendChild(shapeContainer);
+}
+
+// Aktif şekli güncelleyen fonksiyon
+function updateActiveShape(activeButton) {
+  // Tüm butonların aktif sınıfını kaldır
+  document.querySelectorAll('#shape-container button').forEach(button => {
+      button.classList.remove('active-shape');
+  });
+
+  // Seçili butona aktif sınıfını ekle
+  activeButton.classList.add('active-shape');
+}
+
+// Şekil butonlarının stilini güncelleme
+const style = document.createElement('style');
+style.innerHTML = `
+  .active-shape {
+      border: 2px solid #fff; /* Seçili butonun etrafında beyaz bir sınır */
+      background-color: rgba(255, 255, 255, 0.2); /* Hafif bir arka plan rengi */
   }
+`;
+document.head.appendChild(style);
+
+// Varsayılan olarak Freeform'un seçili olmasını sağla
+document.addEventListener('DOMContentLoaded', () => {
+  const defaultButton = document.querySelector('button[data-shape="freeform"]');
+  if (defaultButton) {
+      updateActiveShape(defaultButton);
+  }
+});
+
 
   // Favori renk butonlarını oluşturma
   function createFavoriteColorButtons() {
