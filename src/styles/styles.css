@@ -1,0 +1,125 @@
+/* General Panel Styling */
+#control-panel {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10001;
+    user-select: none;
+}
+
+/* Button Styling */
+#shape-container button,
+.action-button,
+#dropdown-button {
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+#shape-container button {
+    background-size: contain;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+}
+
+#color-container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#color-container button {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 0 !important;
+}
+
+#color-container button:hover {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.action-button.small {
+    width: 40px;
+    height: 40px;
+}
+
+#dropdown-button {
+    padding: 10px;
+}
+
+#dropdown-menu {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    position: absolute;
+    right: 0;
+    top: -80px;
+    z-index: 10001;
+}
+
+/* Dropdown Menu Items */
+.action-picker {
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#clear-button {
+    background: #ff4d4d;
+    padding: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+#clear-button:hover {
+    transform: scale(1.1);
+}
+
+#clear-button .clear-icon {
+    width: 20px;
+    height: 20px;
+}
+
+#webdraw-canvas {
+    cursor: crosshair;
+}
+
+/* Transitions and Animations */
+.open {
+    transform: rotate(135deg);
+}
+
+.close {
+    transform: rotate(0deg);
+}
+
+.action-button:hover,
+#clear-button:hover {
+    transform: scale(1.1);
+}
+#dropdown-button img{
+    width: 48px;
+    height: 48px;
+    pointer-events: none;
+    
+}
+.action-button img,
+#clear-button .clear-icon {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+}

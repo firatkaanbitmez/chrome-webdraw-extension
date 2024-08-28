@@ -1,0 +1,42 @@
+/* Dark Theme - General Panel Styling */
+#control-panel {
+  background: rgba(30, 30, 30, 0.9);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Dark Theme - Button Styling */
+#shape-container button {
+  filter: brightness(0) invert(1);
+}
+
+.active-shape {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+#dropdown-menu {
+  background: rgba(30, 30, 30, 0.95);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Dark Theme - Dropdown Menu Items */
+.action-picker {
+  border: 1px solid #555;
+  background-color: #2d2d2d;
+  color: #fff;
+}
+
+/* Dark Theme - Buttons */
+.action-button,
+#dropdown-button {
+  background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+}
+
+.action-button img,
+#clear-button .clear-icon {
+  filter: brightness(0) invert(1);
+}
+
+#clear-button:hover {
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+}

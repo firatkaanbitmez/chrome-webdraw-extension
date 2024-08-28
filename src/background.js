@@ -19,23 +19,35 @@ chrome.action.onClicked.addListener((tab) => {
 
 function activateDrawingMode(tabId) {
   chrome.storage.sync.get('theme', ({ theme }) => {
-    const cssFile = theme === 'light' ? 'styles/panel-light.css' : 'styles/panel.css';
-    chrome.scripting.executeScript({
-      target: { tabId: tabId },
-      files: ["draw.js"]
-    })
-    .then(() => {
-      return chrome.scripting.insertCSS({
-        target: { tabId: tabId },
-        files: [cssFile]
+      const cssFile = theme === 'light' ? 'styles/panel-light.css' : 'styles/panel-dark.css';
+      
+      // Önce styles.css dosyasını yükle
+      chrome.scripting.insertCSS({
+          target: { tabId: tabId },
+          files: ["styles/styles.css"]
+      })
+      .then(() => {
+          // styles.css yüklendikten sonra, temaya özgü CSS dosyasını yükle
+          return chrome.scripting.insertCSS({
+              target: { tabId: tabId },
+              files: [cssFile]
+          });
+      })
+      .then(() => {
+          // Son olarak JavaScript dosyasını çalıştır
+          return chrome.scripting.executeScript({
+              target: { tabId: tabId },
+              files: ["draw.js"]
+          });
+      })
+      .catch(error => {
+          console.error(error);
+          triggerNotification('Failed to activate drawing mode.');
       });
-    })
-    .catch(error => {
-      console.error(error);
-      triggerNotification('Failed to activate drawing mode.');
-    });
   });
 }
+
+
 
 
 function deactivateDrawingMode(tabId) {
