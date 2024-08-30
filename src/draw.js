@@ -21,11 +21,16 @@ if (!window.webDrawInitialized) {
   let currentPath = [];
   let drawHistory = JSON.parse(localStorage.getItem('drawHistory')) || [];
   let redoHistory = [];
-  let currentShape = 'freeform'; // Şekil türü: 'freeform', 'circle', 'square', 'triangle', 'arrow', 'line'
+  let currentShape = 'freeform'; // Şekil türü: 'freeform', 'circle', 'square', 'triangle', 'arrow', 'line', 'text'
   let startX, startY;
+  let isAddingText = false; // Metin ekleme modunu takip etmek için
 
   // Çizime başlama fonksiyonu
   function startDrawing(e) {
+    if (currentShape === 'text') {
+      addTextToCanvas(e.clientX, e.clientY);
+      return;
+    }
     drawing = true;
     startX = e.clientX;
     startY = e.clientY;
@@ -100,6 +105,26 @@ if (!window.webDrawInitialized) {
     context.stroke();
   }
 
+  // Metin ekleme fonksiyonu
+  function addTextToCanvas(x, y) {
+    const text = prompt('Lütfen eklemek istediğiniz metni girin:');
+    if (text === null) return; // Kullanıcı metin girmeden iptal ettiyse çık
+
+    ctx.font = `${localStorage.getItem('currentFontSize') || 16}px ${localStorage.getItem('currentFontFamily') || 'Arial'}`;
+    ctx.fillStyle = localStorage.getItem('currentColor') || '#FF0000';
+    ctx.fillText(text, x, y);
+
+    drawHistory.push({
+      shape: 'text',
+      text,
+      x,
+      y,
+      font: ctx.font,
+      color: ctx.fillStyle,
+    });
+    localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+  }
+
   // Çizimi bitirme fonksiyonu
   function stopDrawing(e) {
     if (!drawing) return;
@@ -164,6 +189,10 @@ if (!window.webDrawInitialized) {
         ctx.moveTo(path.startX, path.startY);
         ctx.lineTo(path.points[1].x, path.points[1].y);
         ctx.stroke();
+      } else if (path.shape === 'text') {
+        ctx.font = path.font;
+        ctx.fillStyle = path.color;
+        ctx.fillText(path.text, path.x, path.y);
       }
     });
   }
@@ -171,12 +200,13 @@ if (!window.webDrawInitialized) {
   // Şekil seçme butonları oluşturma
   function createShapeButtons() {
     const shapes = [
-      { name: 'Freeform', value: 'freeform', icon: 'icons/pencil.png' }, // Kalem ikonu
+      { name: 'Freeform', value: 'freeform', icon: 'icons/pencil.png' },
       { name: 'Circle', value: 'circle', icon: 'icons/circle.png' },
       { name: 'Square', value: 'square', icon: 'icons/square.png' },
       { name: 'Triangle', value: 'triangle', icon: 'icons/triangle.png' },
       { name: 'Arrow', value: 'arrow', icon: 'icons/arrow.png' },
-      { name: 'Line', value: 'line', icon: 'icons/line.png' } // Çizgi ikonu
+      { name: 'Line', value: 'line', icon: 'icons/line.png' },
+      { name: 'Text', value: 'text', icon: 'icons/text.png' } // Yeni metin şekli ikonu
     ];
 
     const shapeContainer = document.createElement('div');
@@ -212,12 +242,10 @@ if (!window.webDrawInitialized) {
 
   // Aktif şekli güncelleyen fonksiyon
   function updateActiveShape(activeButton) {
-    // Tüm butonların aktif sınıfını kaldır
     document.querySelectorAll('#shape-container button').forEach(button => {
       button.classList.remove('active-shape');
     });
 
-    // Seçili butona aktif sınıfını ekle
     activeButton.classList.add('active-shape');
   }
 
@@ -231,7 +259,6 @@ if (!window.webDrawInitialized) {
   `;
   document.head.appendChild(style);
 
-  // Varsayılan olarak Freeform'un seçili olmasını sağla
   document.addEventListener('DOMContentLoaded', () => {
     const defaultButton = document.querySelector('button[data-shape="freeform"]');
     if (defaultButton) {
@@ -264,6 +291,42 @@ if (!window.webDrawInitialized) {
 
       document.getElementById('control-panel').appendChild(colorContainer);
     });
+  }
+
+  // Font ve boyut seçenekleri oluşturma
+  function createFontOptions() {
+    const fontContainer = document.createElement('div');
+    fontContainer.id = 'font-container';
+    fontContainer.style.display = 'flex';
+    fontContainer.style.gap = '5px';
+
+    const fontFamilies = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia'];
+    const fontSizeRange = { min: 8, max: 72 };
+
+    const fontFamilySelect = document.createElement('select');
+    fontFamilies.forEach(font => {
+      const option = document.createElement('option');
+      option.value = font;
+      option.textContent = font;
+      fontFamilySelect.appendChild(option);
+    });
+    fontFamilySelect.addEventListener('change', () => {
+      localStorage.setItem('currentFontFamily', fontFamilySelect.value);
+    });
+
+    const fontSizeInput = document.createElement('input');
+    fontSizeInput.type = 'number';
+    fontSizeInput.min = fontSizeRange.min;
+    fontSizeInput.max = fontSizeRange.max;
+    fontSizeInput.value = localStorage.getItem('currentFontSize') || 16;
+    fontSizeInput.addEventListener('input', () => {
+      localStorage.setItem('currentFontSize', fontSizeInput.value);
+    });
+
+    fontContainer.appendChild(fontFamilySelect);
+    fontContainer.appendChild(fontSizeInput);
+
+    document.getElementById('control-panel').appendChild(fontContainer);
   }
 
   // Geri al, ileri al ve temizleme fonksiyonları
@@ -304,6 +367,7 @@ if (!window.webDrawInitialized) {
     document.body.appendChild(panel);
     createShapeButtons(); // Şekil butonları panelden sonra ekleniyor
     createFavoriteColorButtons(); // Favori renk butonları panelden sonra ekleniyor
+    createFontOptions(); // Font ve boyut seçenekleri panelden sonra ekleniyor
 
     const undoRedoContainer = document.createElement('div');
     undoRedoContainer.id = 'undo-redo-container';
