@@ -110,7 +110,7 @@ if (!window.webDrawInitialized) {
     const text = prompt('Lütfen eklemek istediğiniz metni girin:');
     if (text === null) return; // Kullanıcı metin girmeden iptal ettiyse çık
 
-    ctx.font = `${localStorage.getItem('currentFontSize') || 16}px ${localStorage.getItem('currentFontFamily') || 'Arial'}`;
+    ctx.font = `${localStorage.getItem('currentFontSize') || 16}px ${localStorage.getItem('currentFontFamily') || 'Arial, sans-serif'}`;
     ctx.fillStyle = localStorage.getItem('currentColor') || '#FF0000';
     ctx.fillText(text, x, y);
 
@@ -293,11 +293,12 @@ if (!window.webDrawInitialized) {
     });
   }
 
-  // Font ve boyut seçenekleri oluşturma
-  function createFontOptions() {
+  // Font ve boyut seçeneklerini dropdown menüye ekleme
+  function createFontOptions(dropdownMenu) {
     const fontContainer = document.createElement('div');
     fontContainer.id = 'font-container';
     fontContainer.style.display = 'flex';
+    fontContainer.style.flexDirection = 'column';
     fontContainer.style.gap = '5px';
 
     const fontFamilies = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia'];
@@ -326,7 +327,7 @@ if (!window.webDrawInitialized) {
     fontContainer.appendChild(fontFamilySelect);
     fontContainer.appendChild(fontSizeInput);
 
-    document.getElementById('control-panel').appendChild(fontContainer);
+    dropdownMenu.appendChild(fontContainer);
   }
 
   // Geri al, ileri al ve temizleme fonksiyonları
@@ -367,7 +368,6 @@ if (!window.webDrawInitialized) {
     document.body.appendChild(panel);
     createShapeButtons(); // Şekil butonları panelden sonra ekleniyor
     createFavoriteColorButtons(); // Favori renk butonları panelden sonra ekleniyor
-    createFontOptions(); // Font ve boyut seçenekleri panelden sonra ekleniyor
 
     const undoRedoContainer = document.createElement('div');
     undoRedoContainer.id = 'undo-redo-container';
@@ -410,6 +410,10 @@ if (!window.webDrawInitialized) {
 
     const dropdownMenu = document.createElement('div');
     dropdownMenu.id = 'dropdown-menu';
+    dropdownMenu.style.display = 'none';
+    dropdownMenu.style.flexDirection = 'column';
+    dropdownMenu.style.gap = '0';
+    dropdownMenu.style.padding='20px';
 
     const colorPicker = document.createElement('input');
     colorPicker.type = 'color';
@@ -424,6 +428,8 @@ if (!window.webDrawInitialized) {
 
     dropdownMenu.appendChild(colorPicker);
     dropdownMenu.appendChild(thicknessInput);
+
+    createFontOptions(dropdownMenu);
 
     dropdownButton.addEventListener('click', () => {
       if (dropdownMenu.style.display === 'flex') {

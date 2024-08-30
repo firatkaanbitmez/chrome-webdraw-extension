@@ -1,12 +1,12 @@
 /* Light Theme - General Panel Styling */
 #control-panel {
-  background: rgba(245, 245, 245, 0.9);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: rgba(245, 245, 245, 0.9) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Light Theme - Button Styling */
 #shape-container button {
-  filter: brightness(0) invert(0);
+  filter: brightness(0) invert(0) !important;
 }
 
 .active-shape {
@@ -15,7 +15,7 @@
 }
 
 #dropdown-menu {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(245, 245, 245, 0.9) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 

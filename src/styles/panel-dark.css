@@ -1,12 +1,12 @@
 /* Dark Theme - General Panel Styling */
 #control-panel {
-  background: rgba(30, 30, 30, 0.9);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  background: rgba(30, 30, 30, 0.9) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* Dark Theme - Button Styling */
 #shape-container button {
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1) !important;
 }
 
 .active-shape {
@@ -15,7 +15,7 @@
 }
 
 #dropdown-menu {
-  background: rgba(30, 30, 30, 0.95);
+  background: rgba(30, 30, 30, 0.9) !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
 

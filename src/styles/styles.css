@@ -13,7 +13,7 @@
     --small-button-size: 20px;
     --dropdown-button-padding: 10px;
     --menu-gap: 10px;
-    --dropdown-menu-top: -145px;
+    --dropdown-menu-top: -140px;
     --icon-size: 16px;
     --dropdown-icon-size: 48px;
     --z-index-high: 10001;
@@ -34,6 +34,7 @@
     z-index: var(--z-index-high);
     user-select: none;
 }
+
 
 /* Button Styling */
 #shape-container button,
