@@ -23,7 +23,6 @@ if (!window.webDrawInitialized) {
   let redoHistory = [];
   let currentShape = 'freeform'; // Şekil türü: 'freeform', 'circle', 'square', 'triangle', 'arrow', 'line', 'text'
   let startX, startY;
-  let isAddingText = false; // Metin ekleme modunu takip etmek için
 
   // Çizime başlama fonksiyonu
   function startDrawing(e) {
