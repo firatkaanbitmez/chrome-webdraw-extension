@@ -165,7 +165,6 @@ function addTextToCanvas(x, y) {
   }, 100); // Küçük bir gecikme ekleyin ki blur olayı hemen tetiklenmesin
 }
 
-// Metni canvas'a işleyen ve textbox'ı kaldıran fonksiyon
 function finalizeText(input, x, y) {
   const text = input.value;
   if (text) {
@@ -184,9 +183,14 @@ function finalizeText(input, x, y) {
       });
       localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
   }
-  input.remove(); // Textbox'ı kaldır
-}
 
+  // input.remove() çağrısını biraz geciktir
+  setTimeout(() => {
+      if (input && document.body.contains(input)) {
+          input.remove(); // Textbox'ı kaldır
+      }
+  }, 0);
+}
 
   // Çizimi bitirme fonksiyonu
   function stopDrawing(e) {
