@@ -15,7 +15,7 @@
     --menu-gap: 10px;
     --dropdown-menu-top: -140px;
     --icon-size: 16px;
-    --dropdown-icon-size: 48px;
+    --dropdown-icon-size: 3rem !important;
     --z-index-high: 10001;
 
     /* Transition Durations */
@@ -114,8 +114,8 @@
 }
 
 #clear-button .clear-icon {
-    width: var(--icon-size);
-    height: var(--icon-size);
+    width: 1.5rem !important;
+    height: 1.5rem !important;
 }
 
 #webdraw-canvas {
@@ -140,6 +140,7 @@
     width: var(--dropdown-icon-size);
     height: var(--dropdown-icon-size);
     pointer-events: none;
+    
 }
 
 .action-button img,

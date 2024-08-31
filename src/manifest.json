@@ -18,6 +18,7 @@
     {
       "resources": [
         "icons/draw-128.png",
+        "icons/draw-128.svg",
         "icons/pencil.png",
         "icons/undo.png",
         "icons/redo.png",

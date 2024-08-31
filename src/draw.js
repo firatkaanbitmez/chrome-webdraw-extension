@@ -471,7 +471,9 @@ function finalizeText(input, x, y) {
     const dropdownButton = document.createElement('button');
     dropdownButton.id = 'dropdown-button';
     const dropdownImage = document.createElement('img');
-    dropdownImage.src = chrome.runtime.getURL('icons/draw-128.png');
+    dropdownImage.src = chrome.runtime.getURL('icons/draw-128.svg');
+    dropdownImage.style.width = '48px';
+    dropdownImage.style.height = '48px';
     dropdownButton.appendChild(dropdownImage);
 
     const dropdownMenu = document.createElement('div');
