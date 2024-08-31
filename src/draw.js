@@ -106,24 +106,87 @@ if (!window.webDrawInitialized) {
   }
 
   // Metin ekleme fonksiyonu
-  function addTextToCanvas(x, y) {
-    const text = prompt('Lütfen eklemek istediğiniz metni girin:');
-    if (text === null) return; // Kullanıcı metin girmeden iptal ettiyse çık
-
-    ctx.font = `${localStorage.getItem('currentFontSize') || 16}px ${localStorage.getItem('currentFontFamily') || 'Arial, sans-serif'}`;
-    ctx.fillStyle = localStorage.getItem('currentColor') || '#FF0000';
-    ctx.fillText(text, x, y);
-
-    drawHistory.push({
-      shape: 'text',
-      text,
-      x,
-      y,
-      font: ctx.font,
-      color: ctx.fillStyle,
-    });
-    localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+function addTextToCanvas(x, y) {
+  // Eğer mevcut bir textbox varsa önce onu kaldır
+  let existingInput = document.getElementById('textInput');
+  if (existingInput) {
+      existingInput.remove();
   }
+
+  // Textbox oluştur
+  const input = document.createElement('input');
+  input.id = 'textInput';
+  input.type = 'text';
+  input.style.position = 'absolute';
+  input.style.left = `${x}px`;
+  input.style.top = `${y}px`;
+  input.style.fontSize = `${localStorage.getItem('currentFontSize') || 16}px`;
+  input.style.fontFamily = localStorage.getItem('currentFontFamily') || 'Arial, sans-serif';
+  input.style.color = localStorage.getItem('currentColor') || '#FF0000';
+  input.style.border = '1px solid #000';
+  input.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+  input.style.zIndex = '10001'; // Canvas'ın üzerinde görünmesini sağlar
+  input.style.padding = '2px';
+  input.style.outline = 'none';
+  input.style.boxShadow = '0 0 5px rgba(0, 0, 0, 0.2)';
+  input.style.width = '200px';
+
+  // Enter tuşuna basıldığında metni kaydet
+  input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+          finalizeText(input, x, y);
+      }
+  });
+
+  // Mouse click ile odaktan çıkınca tetiklenecek blur olayını erteleme
+  let ignoreBlur = false;
+
+  input.addEventListener('mousedown', function () {
+      ignoreBlur = true;
+  });
+
+  input.addEventListener('mouseup', function () {
+      ignoreBlur = false;
+      input.focus(); // Odaklanmayı devam ettir
+  });
+
+  input.addEventListener('blur', function () {
+      if (!ignoreBlur) {
+          finalizeText(input, x, y);
+      }
+  });
+
+  // Textbox'ı sayfaya ekle
+  document.body.appendChild(input);
+
+  // Otomatik olarak odaklanır
+  setTimeout(() => {
+      input.focus();
+  }, 100); // Küçük bir gecikme ekleyin ki blur olayı hemen tetiklenmesin
+}
+
+// Metni canvas'a işleyen ve textbox'ı kaldıran fonksiyon
+function finalizeText(input, x, y) {
+  const text = input.value;
+  if (text) {
+      ctx.font = `${localStorage.getItem('currentFontSize') || 16}px ${localStorage.getItem('currentFontFamily') || 'Arial, sans-serif'}`;
+      ctx.fillStyle = localStorage.getItem('currentColor') || '#FF0000';
+      ctx.fillText(text, x, y);
+
+      // Metni drawHistory'e ekle
+      drawHistory.push({
+          shape: 'text',
+          text,
+          x,
+          y,
+          font: ctx.font,
+          color: ctx.fillStyle,
+      });
+      localStorage.setItem('drawHistory', JSON.stringify(drawHistory));
+  }
+  input.remove(); // Textbox'ı kaldır
+}
+
 
   // Çizimi bitirme fonksiyonu
   function stopDrawing(e) {
